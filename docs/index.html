@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flagging Silent CTR Gaps — A FlyRank Content Opportunity Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1A2238;
+    --navy-light: #4A5578;
+    --amber: #C98A2C;
+    --grey: #6B6E76;
+    --bg: #F7F7F5;
+    --rule: #DCDBD5;
+    --card-bg: #FFFFFF;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--navy);
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+  .wrap {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 80px 24px 120px;
+  }
+  h1, h2, h3 {
+    font-family: 'Source Serif 4', serif;
+    color: var(--navy);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  h1 {
+    font-size: 2.6rem;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--navy-light);
+    font-size: 1.15rem;
+    margin: 0 0 40px;
+  }
+  h2 {
+    font-size: 1.5rem;
+    margin: 0 0 18px;
+  }
+  .section {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--rule);
+  }
+  .section-number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--amber);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    display: block;
+    margin-bottom: 8px;
+  }
+  p { margin: 0 0 16px; }
+  strong { color: var(--navy); font-weight: 600; }
+  .lede {
+    font-size: 1.15rem;
+    color: var(--navy);
+  }
+  .abstract-box {
+    background: var(--card-bg);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--amber);
+    padding: 24px 28px;
+    margin-top: 28px;
+    font-size: 1.02rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.95rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--rule);
+  }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--grey);
+    font-weight: 600;
+  }
+  td.num, th.num { font-family: 'IBM Plex Mono', monospace; }
+  tr:last-child td { border-bottom: none; }
+  .metric {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .metric.flag { color: var(--amber); }
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    background: #EFEEE8;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.88em;
+    color: var(--navy);
+  }
+  figure {
+    margin: 28px 0;
+  }
+  figure img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--rule);
+  }
+  figcaption {
+    font-size: 0.92rem;
+    color: var(--grey);
+    margin-top: 10px;
+    font-style: italic;
+  }
+  .callout {
+    background: #EFEBE0;
+    border-left: 3px solid var(--amber);
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 0.96rem;
+  }
+  ul, ol { padding-left: 22px; margin: 0 0 16px; }
+  li { margin-bottom: 8px; }
+  .credit {
+    text-align: center;
+    padding-top: 40px;
+  }
+  .credit a {
+    color: var(--navy);
+    font-weight: 600;
+  }
+  a { color: var(--navy); }
+  .meta-row {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--grey);
+    margin-bottom: 36px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Flagging Silent CTR Gaps</h1>
+  <p class="subtitle">Finding pages that rank well and still lose the click — a FlyRank content opportunity study</p>
+  <div class="meta-row">CTR / Engagement Opportunity Scoring · FlyRank ML Internship Capstone</div>
+
+  <div class="abstract-box">
+    <strong>Abstract.</strong>
+    This project asks: among pages with strong search visibility, which are being overlooked by searchers, and can we systematically flag those as candidates for title/meta description rewrites? The analysis uses FlyRank's starter dataset — 30,000 pages across 32 clients, with trailing-90-day search performance metrics. Two separate approaches were used: a rule-based baseline that flags pages passing three gates (visible, stale, and underperforming on CTR), which produced a ranked shortlist of 9 pages; and a separate decision tree model trained to predict each page's performance trend, evaluated against a naive baseline. The model modestly but genuinely beat that baseline, improving prediction accuracy by 4.3% under an honest, client-grouped validation split. This work is built to support FlyRank's content team: instead of manually scanning thousands of pages, they can start from a ranked, evidence-backed shortlist and decide, page by page, whether a title/meta rewrite or another fix is worth their time.
+  </div>
+
+  <div class="section">
+    <span class="section-number">01 — Introduction</span>
+    <h2>The page that ranks well and still fails</h2>
+    <p class="lede">Imagine a page sitting at the top of search results, earning 429 real impressions over three months — enough traffic to trust the signal isn't a fluke — yet not a single visitor clicks through.</p>
+    <p>This isn't a rare glitch: nine pages in this dataset show the exact same pattern, all ranking well, all genuinely visible, all getting zero clicks. For FlyRank's content team, patterns like this matter because they're easy to miss in a sea of thousands of pages — no single alarm goes off when a page quietly earns visibility without ever converting it into a visit.</p>
+    <p>Rather than manually scanning the full dataset trying to spot pages like this one, the content team can start from a ranked, evidence-backed shortlist and decide, page by page, what's worth fixing first.</p>
+  </div>
+
+  <div class="section">
+    <span class="section-number">02 — Data</span>
+    <h2>Data</h2>
+    <p>This analysis uses the FlyRank ML Internship starter dataset: <strong>30,000 rows, one row per (pseudonymized) content page</strong>, spread across <strong>32 clients</strong>, with <strong>trailing 90-day</strong> performance metrics (impressions, clicks, CTR, and related fields) as of a single snapshot — not a time series.</p>
+    <p>Both <code>content_id</code> and <code>client_id</code> are pseudonyms, used only for grouping and train/test splitting — never as model features.</p>
+    <p>Two columns, <code>trend_direction</code> and the label derived from it, were excluded from anything used as a model input, since both are computed <em>from</em> <code>trend_pct</code> — including them as features would leak the target into itself.</p>
+    <p>FlyRank also provides a much larger warehouse release (~79 million rows, spanning 17 months across 519,606 content items) which was explored early in the internship to understand FlyRank's data landscape, but was not used in this analysis — all results here come from the 30,000-row starter dataset only.</p>
+    <p>No client names, raw search queries, or identifying information appear in this dataset or anywhere in this paper — all fields are pre-anonymized by FlyRank.</p>
+  </div>
+
+  <div class="section">
+    <span class="section-number">03 — Methodology</span>
+    <h2>Methodology</h2>
+    <p><strong>Assumptions:</strong> a page is worth manual review if it is (1) genuinely visible in search, (2) not just stale/abandoned content, and (3) meaningfully underperforming its expected CTR for its position.</p>
+
+    <h3 style="font-size:1.1rem; margin-top:28px;">Baseline — rule-based gates</h3>
+    <table>
+      <tr><th>Gate</th><th>Rule</th></tr>
+      <tr><td>Visible</td><td class="num"><code>impressions_90d &gt;= 81</code></td></tr>
+      <tr><td>Stale</td><td class="num"><code>freshness_tier == '181+'</code></td></tr>
+      <tr><td>Low CTR</td><td class="num"><code>ctr_gap &lt;= -0.5</code></td></tr>
+    </table>
+    <p>Score formula: <code>ctr_gap.abs() × impressions_90d</code>, where <code>ctr_gap</code> is each page's CTR minus the mean CTR for its position tier. This rewards pages that are both badly underperforming <em>and</em> highly visible. This produced <span class="metric flag">9 flagged pages</span> — all with <code>ctr = 0.0</code> despite real impressions, all in <code>position_tier = page_1</code>.</p>
+
+    <h3 style="font-size:1.1rem; margin-top:28px;">Label, features, model</h3>
+    <p>Label: <code>trend_pct</code>, clipped at the 1st/99th percentile <strong>in the training set only</strong> — necessary because an uncapped Decision Tree scored worse than the naive baseline (77.86 vs. 68.15 MAE). A handful of extreme outlier pages were distorting the tree's splits away from accuracy on typical, everyday pages. Capping was not a preference but the difference between a useful model and a useless one. Test data was left uncapped.</p>
+    <p>Features: <code>search_volume</code>, <code>competition</code>, <code>content_type</code>, <code>main_intent</code>, <code>word_count</code> (one-hot encoded).</p>
+    <p>Model: Decision Tree Regressor (<code>max_depth=4</code>), chosen over a Random Forest — comparable MAE, but the shallow tree is directly traceable branch-by-branch, which matters when the reader making a decision from this work is a non-ML content strategist, not a data scientist.</p>
+
+    <h3 style="font-size:1.1rem; margin-top:28px;">Validation design & leakage checks</h3>
+    <ul>
+      <li>Split via <code>GroupShuffleSplit</code> on <code>client_id</code>, not a plain random split, so pages from the same client never appear in both train and test.</li>
+      <li>A plain random split made the model look roughly <strong>twice as good</strong> as it actually was — see Results.</li>
+      <li>Confirmed <code>trend_direction</code> and its derived label were correctly excluded as features.</li>
+      <li>Stress-tested feature importance: <code>word_count</code> showed 98.4% importance; a with/without test confirmed this is a structural artifact of a shallow tree, not evidence of leakage.</li>
+      <li>Corrected the naive baseline to use the raw target mean, not a mean computed from the clipped/capped training data.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <span class="section-number">04 — Results</span>
+    <h2>Results (vs. baseline)</h2>
+    <p>Both models beat the naive baseline, but only modestly. The Random Forest's added complexity bought essentially no improvement over the single Decision Tree.</p>
+
+    <table>
+      <tr><th>Model</th><th class="num">MAE</th><th class="num">Improvement</th></tr>
+      <tr><td>Naive baseline</td><td class="num metric">68.15</td><td class="num">—</td></tr>
+      <tr><td>Decision Tree (capped)</td><td class="num metric">65.24</td><td class="num metric">4.3%</td></tr>
+      <tr><td>Random Forest (capped)</td><td class="num metric">65.14</td><td class="num metric">4.4%</td></tr>
+    </table>
+
+    <figure>
+      <img src="img/chart_mae_comparison.png" alt="Bar chart comparing MAE of naive baseline, decision tree, and random forest">
+      <figcaption>A shallow, interpretable model modestly but genuinely beats the naive baseline.</figcaption>
+    </figure>
+
+    <h3 style="font-size:1.1rem; margin-top:28px;">Why the split method matters</h3>
+    <p>A plain random split (no client grouping) makes the same model look nearly twice as good as it really is:</p>
+
+    <figure>
+      <img src="img/chart_split_comparison.png" alt="Bar chart comparing honest 4.3% improvement vs dishonest 8.6% improvement">
+      <figcaption>A random split without client grouping makes the same model look nearly twice as good as it really is.</figcaption>
+    </figure>
+
+    <p>The <strong>4.3%</strong> figure is the one that reflects real-world deployment — performance on clients the model has never seen — and is the number reported as this project's result. The 8.6% figure is reported only to demonstrate why the grouped split was necessary.</p>
+
+    <div class="callout">
+      <strong>Precision@K comparison:</strong> attempted between the rule and the model on the held-out test split, but the rule's three gates flagged 0 pages within this client subset (consistent with flagging only 9 pages across the full dataset). A direct precision@K comparison was therefore not meaningful on this split — not a failure of either method, but a mismatch between the rule's intentional selectivity and a single train/test partition's scale.
+    </div>
+
+    <h3 style="font-size:1.1rem; margin-top:28px;">Feature importance: looks dominant, isn't</h3>
+    <figure>
+      <img src="img/chart_feature_importance.png" alt="Side by side chart of feature importance and MAE with and without word_count">
+      <figcaption>High importance does not mean high real impact — removing word_count barely changes accuracy.</figcaption>
+    </figure>
+    <p>The model's largest errors occur on pages with extreme real <code>trend_pct</code> values — an expected consequence of capping the training target, not a flaw. A second, more instructive error type appeared on an ordinary page that received a wildly high prediction, traced to the model's heavy reliance on <code>word_count</code> — confirmed as a shallow-tree structural artifact, not genuine predictive signal.</p>
+  </div>
+
+  <div class="section">
+    <span class="section-number">05 — Limitations</span>
+    <h2>Limitations &amp; honest framing</h2>
+    <p><strong>Feature importance is misleading, not a real signal:</strong> the Decision Tree assigns 98.4% of its importance to <code>word_count</code>, but a controlled with/without test showed removing it barely changes MAE (65.24 → 64.90). This reflects a structural artifact of a shallow tree, not a real driver of performance.</p>
+    <p><strong>Capping limits prediction on extreme cases:</strong> necessary to make the model useful at all, but it means the model cannot meaningfully predict pages with genuinely extreme <code>trend_pct</code> values — a known, accepted tradeoff.</p>
+    <p><strong>Precision@K comparison was inconclusive</strong> on the held-out split, due to the rule's intentional selectivity at small scale — not a failure of either method.</p>
+    <p><strong>The flagged shortlist is narrow, not representative.</strong> All 9 flagged pages share the same content type (keyword article) and position tier (page one), and over half belong to a single client. The rule has not been validated on other content types, position tiers, or a broader client base.</p>
+    <p><strong>Sample size and generalizability:</strong> this analysis is built on a 30,000-row, 32-client snapshot — a small slice of FlyRank's full warehouse (~520,000 content items across roughly 100 clients). Patterns confirmed here are real <em>within this sample</em>, but haven't been tested against the full client base.</p>
+    <p><strong>Detection, not prescription:</strong> this work flags pages worth reviewing — it does not test or prove that title/meta description rewrites (or any other fix) will recover engagement. The 9 flagged pages are candidates for review, not a guaranteed list of fixable pages.</p>
+  </div>
+
+  <div class="section">
+    <span class="section-number">06 — Recommendations</span>
+    <h2>Ranked recommendations</h2>
+    <p>Nine pages passed all three gates in the 30,000-row snapshot. All nine have <code>ctr = 0.0</code> — zero clicks despite real search impressions. Ranked by score (<code>|ctr_gap| × impressions_90d</code>), highest priority first:</p>
+
+    <table>
+      <tr><th>Rank</th><th class="num">Impressions (90d)</th><th>Reason</th><th>Action</th></tr>
+      <tr><td>1</td><td class="num metric flag">429</td><td>Visible, Stale, Low CTR</td><td>Needs review</td></tr>
+      <tr><td>2</td><td class="num metric flag">265</td><td>Visible, Stale, Low CTR</td><td>Needs review</td></tr>
+      <tr><td>3</td><td class="num metric flag">198</td><td>Visible, Stale, Low CTR</td><td>Needs review</td></tr>
+      <tr><td>…</td><td class="num">…</td><td>…</td><td>…</td></tr>
+      <tr><td>9</td><td class="num metric flag">81</td><td>Visible, Stale, Low CTR</td><td>Needs review</td></tr>
+    </table>
+
+    <p>The ranking reflects wasted opportunity, not just failure: a page with 429 impressions and zero clicks represents more lost visibility than a page with 81 impressions and zero clicks, even though both trip the same three gates.</p>
+
+    <p><strong>Before acting on any flagged page:</strong> confirm the page still matches this profile (data is a trailing-90-day snapshot), read the page against its target query (a mismatched intent needs a content rewrite, not a title tweak), and rule out non-title causes for zero clicks — bot traffic, tracking issues, or a SERP snippet problem can produce the identical pattern. No rewrite should be auto-published without human review, and no page should be promised a specific traffic improvement.</p>
+
+    <div class="callout">
+      <strong>Most important signal to watch:</strong> a sharp change in the flagged count (currently 9) on a rerun. Because <code>ctr_gap</code> is computed relative to the mean CTR within a page's position tier, it is not a fixed measurement — it shifts whenever the underlying population shifts (new clients onboarded, content mix changes, seasonal swings). Other signals worth watching: the 81-impression threshold losing meaning if overall traffic shifts significantly, a page that's rewritten but stays flagged weeks later, and a client's content mix moving away from the keyword-article pages this rule was validated on.
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="section-number">07 — Reproducibility</span>
+    <h2>Reproducibility</h2>
+    <p>All code, notebooks, and the raw dataset used in this analysis are available in the project repository: <a href="https://github.com/YoussefAli07/flyrank-ml-internship-starter" target="_blank">github.com/YoussefAli07/flyrank-ml-internship-starter</a>.</p>
+    <p>Relevant notebooks: <code>w05_model.ipynb</code> (model training and baseline comparison), <code>w06_validation_audit.ipynb</code> (honest validation and leakage checks), <code>w07_action_playbook.ipynb</code> (ranked recommendations), and <code>capstone.ipynb</code> (full pipeline, mirrors this paper section-by-section).</p>
+    <p>All models use <code>random_state=42</code> for reproducibility. To rerun: clone the repo, install <code>pandas</code> and <code>scikit-learn</code>, and run each notebook top to bottom.</p>
+  </div>
+
+  <div class="section credit">
+    <span class="section-number" style="text-align:center;">08 — Acknowledgments</span>
+    <p>Built on the FlyRank ML Internship dataset.<br>Learn more at <a href="https://flyrank.ai" target="_blank">flyrank.ai</a>.</p>
+  </div>
+
+</div>
+</body>
+</html>
